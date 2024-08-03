@@ -12,7 +12,7 @@ import { dynamicGet } from 'services/dynamicServices/dynamicGet';
 import { Entities, IPurchaseEntity, IRewardEntity } from './types';
 
 const App: React.FC = () => {
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(5200);
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(null);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
   const [everythingLoaded, setEverythingLoaded] = useState<boolean>(false);
   const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
@@ -90,9 +90,9 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    //fetchRewards();
+    fetchRewards();
     purchasesCollectionSubscription();
-    //getEnergyPoints();
+    getEnergyPoints();
 
     return () => {
       if (unsuscribeRef.current) unsuscribeRef.current();
