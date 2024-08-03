@@ -9,7 +9,7 @@ import { EntityTypesMapReturnedValues } from 'types';
 
 export const dynamicGet = async <T extends keyof EntityTypesMapReturnedValues>(
   entity: T,
-): Promise<T | undefined> => {
+): Promise<EntityTypesMapReturnedValues[T][] | undefined> => {
   const productsCollection = collection(db, entity);
 
   try {
@@ -20,7 +20,7 @@ export const dynamicGet = async <T extends keyof EntityTypesMapReturnedValues>(
       ...item.data(),
     }));
 
-    return itemList as unknown as T;
+    return itemList as unknown as EntityTypesMapReturnedValues[T][];
   } catch (error) {
     console.log(error);
   }

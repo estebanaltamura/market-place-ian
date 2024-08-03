@@ -1,19 +1,19 @@
 export enum Entities {
-  'products' = 'products',
+  'rewards' = 'rewards',
   'purchases' = 'purchases',
 }
 
 export type EntityTypesMapReturnedValues = {
-  [Entities.products]: IProductEntity;
+  [Entities.rewards]: IRewardEntity;
   [Entities.purchases]: IPurchaseEntity;
 };
 
 export type EntityTypesMapPayloadValues = {
-  [Entities.products]: IProduct;
+  [Entities.rewards]: IReward;
   [Entities.purchases]: IPurchase;
 };
 
-export interface IProductEntity extends IProduct {
+export interface IRewardEntity extends IReward {
   id: string;
   state: StateTypes;
   createdAt: Date;
@@ -28,22 +28,43 @@ export interface IPurchaseEntity extends IPurchase {
 }
 
 export interface IPurchase {
-  productId: string;
+  rewardId: string;
+  title: string;
+  price: number;
+  rewardCategory: RewardCategoryTypes;
 }
 
-export interface IProduct {
+export interface IReward {
   title: string;
   description: string;
   price: number;
   imageUrl: string;
-  productCategory: ProductCategoryTypes;
+  rewardCategory: RewardCategoryTypes;
 }
 
-export enum ProductCategoryTypes {
+export const EnumRewardTypes = {
+  title: 'string',
+  description: 'string',
+  price: 'number',
+  imageUrl: 'string',
+  rewardCategory: 'RewardCategoryTypes',
+};
+
+export const EnumPurchaseTypes = {
+  rewardId: 'string',
+};
+
+export const EntityEnumTypesMap = {
+  rewards: EnumRewardTypes,
+  purchases: EnumPurchaseTypes,
+};
+
+export enum RewardCategoryTypes {
   'food' = 'food',
   'videoGamesTime' = 'videoGamesTime',
   'toys' = 'toys',
   'screenTime' = 'screenTime',
+  'mpCredit' = 'mpCredit',
 }
 
 export enum StateTypes {
