@@ -12,10 +12,10 @@ import { dynamicGet } from 'services/dynamicServices/dynamicGet';
 import { Entities, IPurchaseEntity, IRewardEntity } from './types';
 
 const App: React.FC = () => {
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(null);
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(5200);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
   const [everythingLoaded, setEverythingLoaded] = useState<boolean>(false);
-  const [rewards, setRewards] = useState<IRewardEntity[] | null>(null);
+  const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
   const [purchases, setPurchases] = useState<IPurchaseEntity[] | null>(null);
   const [activeTab, setActiveTab] = useState<'marketPlace' | 'purchases'>('marketPlace');
   const [loadingWording, setLoadingWording] = useState<string | null>(null);
@@ -90,9 +90,9 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchRewards();
+    //fetchRewards();
     purchasesCollectionSubscription();
-    getEnergyPoints();
+    //getEnergyPoints();
 
     return () => {
       if (unsuscribeRef.current) unsuscribeRef.current();
@@ -159,7 +159,14 @@ const App: React.FC = () => {
         {!everythingLoaded ? (
           <Typography
             className="bangers-font"
-            sx={{ display: 'block', margin: 'auto', height: '100%', color: 'white', fontSize: '32px' }}
+            sx={{
+              display: 'block',
+              margin: 'auto',
+              height: '100%',
+              color: 'white',
+              fontSize: '32px',
+              textAlign: 'center',
+            }}
           >
             {loadingWording && loadingWording}
           </Typography>
@@ -231,7 +238,6 @@ const App: React.FC = () => {
             {/* Body */}
             {activeTab === 'marketPlace' && (
               <>
-                {!rewards && <Typography>Loading...</Typography>}
                 {rewards && rewards.length === 0 && (
                   <Typography
                     className="bangers-font"
@@ -241,6 +247,7 @@ const App: React.FC = () => {
                       height: '100%',
                       color: 'white',
                       fontSize: '32px',
+                      textAlign: 'center',
                     }}
                   >
                     No se encontraron recompensas
@@ -280,6 +287,7 @@ const App: React.FC = () => {
                       height: '100%',
                       color: 'white',
                       fontSize: '32px',
+                      textAlign: 'center',
                     }}
                   >
                     No se encontraron compras
