@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { Entities, IRewardEntity } from 'types';
-import { dynamicCreate } from 'services/dynamicServices/dynamicCreate';
+import { dynamicCreate } from 'services/internal/dynamicServices/dynamicCreate';
 
 interface IRewardCard {
   reward: IRewardEntity;

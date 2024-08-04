@@ -2,7 +2,7 @@
 import { doc, setDoc } from 'firebase/firestore';
 
 // ** Type Imports **
-import { EntityTypesMapPayloadValues, EntityTypesMapReturnedValues, StateTypes } from '../../types';
+import { EntityTypesMapPayloadValues, EntityTypesMapReturnedValues, StateTypes } from '../../../types';
 
 // ** Random id library **
 import { v4 as uuidv4 } from 'uuid';

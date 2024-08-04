@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=BarlowCondensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
 
 * {
   box-sizing: border-box;
@@ -26,4 +27,8 @@ code {
 
 .barlow-condensed-font {
   font-family: 'BarlowCondensed', sans-serif !important;
+}
+
+.montserrat-font {
+  font-family: 'Montserrat', sans-serif !important;
 }

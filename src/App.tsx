@@ -1,69 +1,42 @@
-import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import axios from 'axios';
-import PurchaseCard from 'components/PurchaseCard';
-import RewardCard from 'components/RewardCard';
-import { collection, onSnapshot, query, Unsubscribe } from 'firebase/firestore';
+// ** React Imports
+import React, { useEffect, useRef, useState } from 'react';
+
+// ** Material UI Imports
+import { Typography, Box } from '@mui/material';
+
+// ** Firebase Imports
+import { collection, onSnapshot, query, Timestamp, Unsubscribe } from 'firebase/firestore';
 import { db } from 'firebaseConfig';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { dynamicGet } from 'services/dynamicServices/dynamicGet';
+// ** Services Imports
+import { dynamicGet } from 'services/internal/dynamicServices/dynamicGet';
+import getEnergyPoints from 'services/external/getEnergyPoints';
+import getRewards from 'services/internal/rewards';
 
+// ** Types Imports
 import { Entities, IPurchaseEntity, IRewardEntity } from './types';
 
+// ** Components Imports
+import PurchaseCard from 'components/PurchaseCard';
+import RewardCard from 'components/RewardCard';
+import Header from 'components/Header';
+
 const App: React.FC = () => {
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(null);
+  // ** Data states
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(7000);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
-  const [everythingLoaded, setEverythingLoaded] = useState<boolean>(false);
   const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
   const [purchases, setPurchases] = useState<IPurchaseEntity[] | null>(null);
-  const [activeTab, setActiveTab] = useState<'marketPlace' | 'purchases'>('marketPlace');
+
+  // ** Loading states
+  const [everythingLoaded, setEverythingLoaded] = useState<boolean>(false);
   const [loadingWording, setLoadingWording] = useState<string | null>(null);
+
+  // ** Tab states
+  const [activeTab, setActiveTab] = useState<'marketPlace' | 'purchases'>('marketPlace');
+
+  // ** Firebase subscriptions
   const unsuscribeRef = useRef<Unsubscribe>();
-
-  const getEnergyPoints = async () => {
-    try {
-      const url =
-        'https://api.scraperapi.com/?api_key=0cecee12b8899432b56746d6eb12712c&url=https%3A%2F%2Fwww.khanacademy.org%2Fprofile%2Fpalta1&output_format=json&autoparse=true&render=true';
-
-      const response = await axios.get(url);
-
-      const data = response.data;
-
-      const regex = /class="energy-points-badge"[^>]*>([^<]*)</g;
-      let match;
-      const matches = [];
-
-      while ((match = regex.exec(data)) !== null) {
-        matches.push(match[1].trim());
-      }
-
-      const energyPointsFormatted = matches[0].replace(',', '');
-      const energyPointsFormattedNumber: number = parseInt(energyPointsFormatted);
-
-      console.log(energyPointsFormattedNumber);
-      setOriginalEnergyPoints(energyPointsFormattedNumber);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const fetchRewards = async () => {
-    setRewards(null);
-    try {
-      const getRewardsResponse = await dynamicGet(Entities.rewards);
-      if (!getRewardsResponse) {
-        alert('No rewards found');
-
-        return;
-      }
-
-      setRewards(getRewardsResponse);
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  };
 
   const purchasesCollectionSubscription: () => void = () => {
     const purchasesCollectionRef = collection(db, Entities.purchases);
@@ -90,9 +63,9 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchRewards();
+    getRewards(setRewards);
     purchasesCollectionSubscription();
-    getEnergyPoints();
+    //getEnergyPoints(setOriginalEnergyPoints);
 
     return () => {
       if (unsuscribeRef.current) unsuscribeRef.current();
@@ -173,26 +146,7 @@ const App: React.FC = () => {
         ) : (
           <>
             {/*Header */}
-            <Box
-              sx={{
-                display: 'flex',
-                width: '100%',
-                height: '104px',
-                margin: '0 auto',
-                alignItems: 'center',
-              }}
-            >
-              <img src="/title.svg" alt="" style={{ maxWidth: '380px', width: '58%' }} />
-              <Box sx={{ display: 'flex', flexGrow: 1 }}></Box>
-
-              <img src="/coinGif.gif" alt="" style={{ width: '13%' }} />
-              <Typography
-                className="bangers-font"
-                sx={{ color: 'white', fontSize: '32px', '@media(min-width: 768px)': { fontSize: '46px' } }}
-              >
-                {calculatedEnergyPoints && calculatedEnergyPoints}
-              </Typography>
-            </Box>
+            <Header calculatedEnergyPoints={calculatedEnergyPoints} />
             {/* Tabs */}
             <Box
               sx={{
@@ -298,16 +252,22 @@ const App: React.FC = () => {
                     sx={{
                       display: 'flex',
                       flexDirection: 'column',
-                      justifyContent: 'center',
-                      width: 'fit-content',
-                      padding: '50px 20px',
-                      margin: '0 auto',
+                      width: '100%',
+                      alignItems: 'center',
+                      padding: '50px 0 0 0',
                       gap: '25px',
                     }}
                   >
-                    {purchases?.map((purchase) => (
-                      <PurchaseCard key={purchase.id} purchase={purchase} />
-                    ))}
+                    {purchases
+                      .sort((a, b) => {
+                        const aDate = a.createdAt as unknown as Timestamp;
+                        const bDate = b.createdAt as unknown as Timestamp;
+
+                        return bDate.seconds - aDate.seconds;
+                      })
+                      .map((purchase) => (
+                        <PurchaseCard key={purchase.id} purchase={purchase} />
+                      ))}
                   </Box>
                 )}
               </>
