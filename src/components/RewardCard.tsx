@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { Entities, IRewardEntity } from 'types';
 import { dynamicCreate } from 'services/internal/dynamicServices/dynamicCreate';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 interface IRewardCard {
   reward: IRewardEntity;
@@ -11,25 +13,49 @@ interface IRewardCard {
 const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) => {
   const { title, description, price, imageUrl, id, rewardCategory } = reward;
 
+  const MySwal = withReactContent(Swal);
+
   const purchaseClickHandler = async (reward: IRewardEntity) => {
-    if (!calculatedEnergyPoints) return;
+    if (calculatedEnergyPoints === null) return;
+
+    console.log(calculatedEnergyPoints);
 
     if (price > calculatedEnergyPoints) {
-      alert('No puedes comprar más productos');
+      MySwal.fire({
+        title: 'No tenes fondos suficientes',
+        text: `Necesitas ${price} para comprar este producto`,
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
 
       return;
     }
 
     try {
-      const purchaseResponse = await dynamicCreate(Entities.purchases, {
-        rewardId: reward.id,
-        title,
-        price,
-        rewardCategory,
+      const response = await MySwal.fire({
+        title: `Seguro que queres comprar ${title}?`,
+        text: `Saldo actual: ${calculatedEnergyPoints}, despues de comprar: ${
+          calculatedEnergyPoints - price
+        }`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Comprar',
+        cancelButtonText: 'Cancelar',
       });
 
-      if (!purchaseResponse) {
-        alert('No purchase found');
+      if (response.isConfirmed) {
+        const purchaseResponse = await dynamicCreate(Entities.purchases, {
+          rewardId: reward.id,
+          title,
+          price,
+          rewardCategory,
+        });
+
+        if (!purchaseResponse) {
+          alert('No purchase found');
+
+          return;
+        }
 
         return;
       }

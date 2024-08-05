@@ -32,3 +32,12 @@ code {
 .montserrat-font {
   font-family: 'Montserrat', sans-serif !important;
 }
+
+/* Reducir el margen entre el título y el texto */
+.swal2-title-custom {
+  margin-bottom: 500px !important; /* Ajusta este valor según sea necesario */
+}
+
+.swal2-content-custom {
+  margin-top: 5px !important; /* Ajusta este valor según sea necesario */
+}

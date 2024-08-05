@@ -10,12 +10,13 @@ const Header: React.FC<HeaderPropTypes> = ({ calculatedEnergyPoints }) => {
       sx={{
         display: 'flex',
         width: '100%',
-        height: '104px',
+        height: '70px',
         margin: '0 auto',
         alignItems: 'center',
+        '@media(min-width: 768px)': { height: '104px' },
       }}
     >
-      <img src="/title.svg" alt="" style={{ maxWidth: '380px', width: '58%' }} />
+      <img src="/title.svg" alt="" style={{ maxWidth: '380px', width: '52%' }} />
       <Box sx={{ display: 'flex', flexGrow: 1 }}></Box>
 
       <img src="/coinGif.gif" alt="" style={{ width: '13%' }} />
@@ -23,7 +24,7 @@ const Header: React.FC<HeaderPropTypes> = ({ calculatedEnergyPoints }) => {
         className="montserrat-font"
         sx={{
           color: 'white',
-          fontSize: '32px',
+          fontSize: '26px',
           fontWeight: '800',
           '@media(min-width: 768px)': { fontSize: '46px' },
         }}

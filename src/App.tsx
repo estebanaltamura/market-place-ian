@@ -23,7 +23,7 @@ import Header from 'components/Header';
 
 const App: React.FC = () => {
   // ** Data states
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(240000);
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(25000);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
   const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
   const [purchases, setPurchases] = useState<IPurchaseEntity[] | null>(null);
@@ -126,7 +126,8 @@ const App: React.FC = () => {
           minHeight: '100vh',
           maxWidth: '761px',
           margin: '0 auto',
-          padding: '50px 20px 0 20px',
+          padding: '30px 20px 0 20px',
+          '@media(min-width: 768px)': { padding: '50px 20px 0 20px' },
         }}
       >
         {!everythingLoaded ? (
