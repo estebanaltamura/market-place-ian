@@ -23,7 +23,7 @@ import Header from 'components/Header';
 
 const App: React.FC = () => {
   // ** Data states
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(25000);
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(999999);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
   const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
   const [purchases, setPurchases] = useState<IPurchaseEntity[] | null>(null);

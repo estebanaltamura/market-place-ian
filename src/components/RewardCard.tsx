@@ -34,9 +34,10 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
     try {
       const response = await MySwal.fire({
         title: `Seguro que queres comprar ${title}?`,
-        text: `Saldo actual: ${calculatedEnergyPoints}, despues de comprar: ${
+        html: `Saldo actual: ${calculatedEnergyPoints} EC<br>Después de comprar: ${
           calculatedEnergyPoints - price
-        }`,
+        } EC`,
+
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Comprar',
