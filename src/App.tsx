@@ -126,8 +126,8 @@ const App: React.FC = () => {
           minHeight: '100vh',
           maxWidth: '761px',
           margin: '0 auto',
-          padding: '30px 20px 0 20px',
-          '@media(min-width: 768px)': { padding: '50px 20px 0 20px' },
+          padding: '30px 20px 30px 20px',
+          '@media(min-width: 768px)': { padding: '50px 20px 50px 20px' },
         }}
       >
         {!everythingLoaded ? (
@@ -215,7 +215,7 @@ const App: React.FC = () => {
                       justifyContent: 'center',
                       width: 'fit-content',
                       flexWrap: 'wrap',
-                      padding: '50px 0px',
+                      paddingTop: '50px',
                       margin: '0 auto',
                       gap: '25px',
                     }}
@@ -255,7 +255,7 @@ const App: React.FC = () => {
                       flexDirection: 'column',
                       width: '100%',
                       alignItems: 'center',
-                      padding: '50px 0 0 0',
+                      paddingTop: '50px',
                       gap: '25px',
                     }}
                   >
