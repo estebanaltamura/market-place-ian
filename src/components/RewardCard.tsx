@@ -18,11 +18,9 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
   const purchaseClickHandler = async (reward: IRewardEntity) => {
     if (calculatedEnergyPoints === null) return;
 
-    console.log(calculatedEnergyPoints);
-
     if (price > calculatedEnergyPoints) {
       MySwal.fire({
-        title: 'No tenes fondos suficientes',
+        title: 'No tenes saldo suficiente',
         text: `Necesitas ${price} para comprar este producto`,
         icon: 'error',
         confirmButtonText: 'OK',
@@ -37,7 +35,6 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
         html: `Saldo actual: ${calculatedEnergyPoints} EC<br>Después de comprar: ${
           calculatedEnergyPoints - price
         } EC`,
-
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Comprar',
@@ -45,18 +42,20 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
       });
 
       if (response.isConfirmed) {
-        const purchaseResponse = await dynamicCreate(Entities.purchases, {
+        MySwal.fire({
+          title: `Compra realizada`,
+          text: `Nuevo saldo: ${calculatedEnergyPoints - price} EC`,
+          icon: 'success',
+
+          confirmButtonText: 'OK',
+        });
+
+        await dynamicCreate(Entities.purchases, {
           rewardId: reward.id,
           title,
           price,
           rewardCategory,
         });
-
-        if (!purchaseResponse) {
-          alert('No purchase found');
-
-          return;
-        }
 
         return;
       }
@@ -73,7 +72,7 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
         backgroundImage: `url('/cardShape.svg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        position: 'relative',
+        boxSizing: 'border-box',
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', zIndex: 10, alignItems: 'center' }}>

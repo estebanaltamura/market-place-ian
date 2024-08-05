@@ -23,7 +23,7 @@ import Header from 'components/Header';
 
 const App: React.FC = () => {
   // ** Data states
-  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(999999);
+  const [originalEnergyPoints, setOriginalEnergyPoints] = useState<number | null>(50000);
   const [calculatedEnergyPoints, setCalculatedEnergyPoints] = useState<number | null>(null);
   const [rewards, setRewards] = useState<IRewardEntity[] | null>([]);
   const [purchases, setPurchases] = useState<IPurchaseEntity[] | null>(null);
@@ -109,7 +109,7 @@ const App: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100vw',
+        width: '100%',
         minHeight: '100vh',
         backgroundImage: `url('/appBackground.svg')`,
         backgroundSize: 'cover',
@@ -121,13 +121,14 @@ const App: React.FC = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           width: '100%',
           height: '100%',
           minHeight: '100vh',
-          maxWidth: '761px',
+          maxWidth: '745px',
           margin: '0 auto',
           padding: '30px 20px 30px 20px',
-          '@media(min-width: 768px)': { padding: '50px 20px 50px 20px' },
+          '@media(min-width: 768px)': { padding: '50px 20px 50px 20px', maxWidth: '745px' },
         }}
       >
         {!everythingLoaded ? (
@@ -212,11 +213,10 @@ const App: React.FC = () => {
                   <Box
                     sx={{
                       display: 'flex',
-                      justifyContent: 'center',
-                      width: 'fit-content',
+                      minWidth: '340px',
+                      maxWidth: '705px',
                       flexWrap: 'wrap',
                       paddingTop: '50px',
-                      margin: '0 auto',
                       gap: '25px',
                     }}
                   >
