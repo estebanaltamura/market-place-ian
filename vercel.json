@@ -15,6 +15,10 @@
     {
       "src": "/api/scrape",
       "dest": "/api/scrape.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.html"
     }
   ]
 }
