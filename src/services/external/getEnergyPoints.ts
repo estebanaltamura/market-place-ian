@@ -20,6 +20,7 @@ const getEnergyPoints: (
       matches.push(match[1].trim());
     }
 
+    console.log(data);
     const energyPointsFormatted = matches[0].replace(',', '');
     const energyPointsFormattedNumber: Big = new Big(energyPointsFormatted);
 
