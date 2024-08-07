@@ -1,7 +1,9 @@
+import React from 'react';
 import { Box, Typography } from '@mui/material';
+import Big from 'big.js';
 
 interface HeaderPropTypes {
-  calculatedEnergyPoints: number | null;
+  calculatedEnergyPoints: Big;
 }
 
 const Header: React.FC<HeaderPropTypes> = ({ calculatedEnergyPoints }) => {
@@ -29,7 +31,7 @@ const Header: React.FC<HeaderPropTypes> = ({ calculatedEnergyPoints }) => {
           '@media(min-width: 768px)': { fontSize: '46px' },
         }}
       >
-        {calculatedEnergyPoints && calculatedEnergyPoints}
+        {calculatedEnergyPoints.toFixed(2)}
       </Typography>
     </Box>
   );

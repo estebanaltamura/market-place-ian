@@ -1,16 +1,16 @@
 // ** Axios Import
 import axios from 'axios';
+import Big from 'big.js';
 
 const getEnergyPoints: (
-  setOriginalEnergyPoints: React.Dispatch<React.SetStateAction<number | null>>,
+  setOriginalEnergyPoints: React.Dispatch<React.SetStateAction<Big | null>>,
 ) => Promise<void> = async (setOriginalEnergyPoints) => {
   try {
-    const url =
-      'https://api.scraperapi.com/?api_key=0cecee12b8899432b56746d6eb12712c&url=https%3A%2F%2Fwww.khanacademy.org%2Fprofile%2Fpalta1&output_format=json&autoparse=true&render=true';
-
-    const response = await axios.get(url);
-
-    const data = response.data;
+    const response = await fetch('http://localhost:4000/scrape');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.text();
 
     const regex = /class="energy-points-badge"[^>]*>([^<]*)</g;
     let match;
@@ -21,11 +21,11 @@ const getEnergyPoints: (
     }
 
     const energyPointsFormatted = matches[0].replace(',', '');
-    const energyPointsFormattedNumber: number = parseInt(energyPointsFormatted);
+    const energyPointsFormattedNumber: Big = new Big(energyPointsFormatted);
 
     setOriginalEnergyPoints(energyPointsFormattedNumber);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching the HTML content:', error);
   }
 };
 

@@ -1,12 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import { Timestamp } from 'firebase/firestore';
-import { IPurchaseEntity } from 'types';
+import { useEffect, useState } from 'react';
+import { IPurchaseEntity, IRewardEntity } from 'types';
 
-interface IPurchaseCard {
+interface IPurchaseCardPropTypes {
   purchase: IPurchaseEntity;
+  rewards: IRewardEntity[];
 }
 
-const PurchaseCard: React.FC<IPurchaseCard> = ({ purchase }) => {
+const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) => {
+  const [image, setImage] = useState<string>('');
   const createdAt = (purchase.createdAt as unknown as Timestamp).toDate();
 
   const createdAtDate = createdAt.toLocaleDateString('es-ES', {
@@ -15,24 +18,82 @@ const PurchaseCard: React.FC<IPurchaseCard> = ({ purchase }) => {
     day: '2-digit',
   });
 
+  useEffect(() => {
+    const reward = rewards.find((reward) => reward.id === purchase.rewardId);
+    if (reward) setImage(reward.imageUrl);
+  }, [purchase, rewards]);
+
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        maxWidth: '340px',
-        minWidth: '100%',
+        position: 'relative',
+        alignItems: 'center',
+        width: '100%',
+        maxWidth: '500px',
         height: '110px',
-        padding: '20px',
-        border: '1px solid white',
-        borderRadius: '16px',
+        padding: '20px 20px 0px 20px',
+        backgroundColor: '#291F68',
+        borderRadius: '20px',
       }}
     >
-      <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>{`Titulo: ${purchase.title}`}</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '70px',
+          height: '70px',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <img src={image} alt="" style={{ width: '70px' }} />
+      </Box>
+      <Typography
+        className="bangers-font"
+        sx={{
+          padding: '0 5px',
+          fontSize: '17px',
+          fontWeight: '400',
+          color: 'white',
+          width: 'fit-content',
+          textAlign: 'center',
+          display: '-webkit-box',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          whiteSpace: 'normal',
+          wordBreak: 'break-word',
+        }}
+      >
+        {purchase.title}
+      </Typography>
 
-      <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>{`Precio: ${purchase.price} EC`}</Typography>
+      <Typography
+        className="bangers-font"
+        sx={{
+          position: 'absolute',
+          top: '3px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '15px',
+          fontWeight: '400',
+          color: 'white',
+        }}
+      >
+        {createdAtDate}
+      </Typography>
+      <Box sx={{ display: 'flex', flexGrow: 1 }}></Box>
 
-      <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>{`Fecha: ${createdAtDate}`}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '15px' }}>
+        <img src="/coin.svg" alt="" style={{ width: '30px' }} />
+        <Typography
+          className="Montserrat-font"
+          sx={{ fontSize: '18px', fontWeight: '800', color: 'white', width: '60px' }}
+        >
+          {purchase.price}
+        </Typography>
+      </Box>
     </Box>
   );
 };

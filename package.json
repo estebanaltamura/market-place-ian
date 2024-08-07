@@ -2,6 +2,7 @@
   "name": "market-place-ian",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -10,13 +11,20 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.2",
+    "@types/axios": "^0.14.0",
+    "@types/express": "^4.17.21",
+    "axios": "^1.7.3",
+    "big.js": "^6.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "firebase": "^10.12.4",
+    "puppeteer": "^23.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.12.4",
     "sweetalert2-react-content": "^5.0.7",
+    "ts-node": "^10.9.2",
     "uuid": "^10.0.0"
   },
   "scripts": {
@@ -47,8 +55,9 @@
     ]
   },
   "devDependencies": {
+    "@types/big.js": "^6.2.2",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.14",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
