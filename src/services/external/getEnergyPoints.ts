@@ -1,5 +1,4 @@
 // ** Axios Import
-import axios from 'axios';
 import Big from 'big.js';
 
 const getEnergyPoints: (
