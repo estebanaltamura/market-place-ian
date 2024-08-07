@@ -6,7 +6,7 @@ const getEnergyPoints: (
   setOriginalEnergyPoints: React.Dispatch<React.SetStateAction<Big | null>>,
 ) => Promise<void> = async (setOriginalEnergyPoints) => {
   try {
-    const response = await fetch('http://localhost:4000/scrape');
+    const response = await fetch('/api/scrape');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
