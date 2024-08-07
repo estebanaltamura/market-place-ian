@@ -6,19 +6,14 @@
       "use": "@vercel/node"
     },
     {
-      "src": "src/**/*",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "src": "package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/api/scrape",
       "dest": "/api/scrape.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/src/index.html"
     }
   ]
 }
