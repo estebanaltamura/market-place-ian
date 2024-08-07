@@ -20,5 +20,5 @@
       "services/*": ["services/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "api"]
 }
