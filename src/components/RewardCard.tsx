@@ -34,7 +34,10 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
         title: `Seguro que queres comprar ${title}?`,
         html: `Precio: ${price} EC<br>Saldo actual: ${calculatedEnergyPoints.toFixed(
           2,
-        )} EC<br>Después de comprar: ${calculatedEnergyPoints.minus(new Big(price)).toFixed(2)} EC`,
+          Big.roundDown,
+        )} EC<br>Después de comprar: ${calculatedEnergyPoints
+          .minus(new Big(price))
+          .toFixed(2, Big.roundDown)} EC`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Comprar',
@@ -44,7 +47,7 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
       if (response.isConfirmed) {
         MySwal.fire({
           title: `Compra realizada`,
-          text: `Nuevo saldo: ${calculatedEnergyPoints.minus(new Big(price)).toFixed(2)} EC`,
+          text: `Nuevo saldo: ${calculatedEnergyPoints.minus(new Big(price)).toFixed(2, Big.roundDown)} EC`,
           icon: 'success',
 
           confirmButtonText: 'OK',

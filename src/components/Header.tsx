@@ -31,7 +31,7 @@ const Header: React.FC<HeaderPropTypes> = ({ calculatedEnergyPoints }) => {
           '@media(min-width: 768px)': { fontSize: '46px' },
         }}
       >
-        {calculatedEnergyPoints.toFixed(2)}
+        {calculatedEnergyPoints.toFixed(2, Big.roundDown)}
       </Typography>
     </Box>
   );
