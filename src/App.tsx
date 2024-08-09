@@ -65,6 +65,7 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log('inicio');
     getRewards(setRewards);
     purchasesCollectionSubscription();
     getEnergyPoints(setOriginalEnergyPoints);

@@ -1,27 +1,32 @@
-// ** Axios Import
 import Big from 'big.js';
 
 const getEnergyPoints: (
   setOriginalEnergyPoints: React.Dispatch<React.SetStateAction<Big | null>>,
 ) => Promise<void> = async (setOriginalEnergyPoints) => {
   try {
-    const response = await fetch('https://www.internal-server-projects.xyz:3200/scrape');
+    const url = encodeURIComponent('https://www.khanacademy.org/profile/idev0x00');
+    const className = 'energy-points-badge';
+
+    const response = await fetch(
+      `https://www.internal-server-projects.xyz:3200/scrape?url=${url}&className=${className}`,
+    );
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    const data = await response.text();
 
-    const regex = /class="energy-points-badge"[^>]*>([^<]*)</g;
-    let match;
-    const matches = [];
+    const data: string[] = await response.json(); // Obtener la respuesta como un array de strings
 
-    while ((match = regex.exec(data)) !== null) {
-      matches.push(match[1].trim());
+    if (data.length === 0) {
+      throw new Error('No matches found');
     }
 
-    console.log(data);
-    const energyPointsFormatted = matches[0].replace(',', '');
-    const energyPointsFormattedNumber: Big = new Big(energyPointsFormatted);
+    console.log(data); // Mostrar el contenido de la respuesta en la consola
+
+    const formattedPoints = data[0].replace(',', '');
+
+    console.log(formattedPoints);
+
+    const energyPointsFormattedNumber: Big = new Big(formattedPoints);
 
     setOriginalEnergyPoints(energyPointsFormattedNumber);
   } catch (error) {
