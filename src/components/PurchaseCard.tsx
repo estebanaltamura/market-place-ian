@@ -12,11 +12,16 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) =
   const [image, setImage] = useState<string>('');
   const createdAt = (purchase.createdAt as unknown as Timestamp).toDate();
 
-  const createdAtDate = createdAt.toLocaleDateString('es-ES', {
+  const createdAtDate = new Intl.DateTimeFormat('es-ES', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  });
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+    .format(createdAt)
+    .replace(',', '');
 
   useEffect(() => {
     const reward = rewards.find((reward) => reward.id === purchase.rewardId);

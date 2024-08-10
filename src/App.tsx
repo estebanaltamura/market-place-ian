@@ -65,7 +65,6 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('inicio');
     getRewards(setRewards);
     purchasesCollectionSubscription();
     getEnergyPoints(setOriginalEnergyPoints);
@@ -134,10 +133,10 @@ const App: React.FC = () => {
           width: '100%',
           height: '100%',
           minHeight: '100vh',
-          maxWidth: '745px',
+          maxWidth: '834px',
           margin: '0 auto',
           padding: '30px 20px 30px 20px',
-          '@media(min-width: 768px)': { padding: '50px 20px 50px 20px', maxWidth: '745px' },
+          '@media(min-width: 768px)': { padding: '50px 20px 50px 20px', maxWidth: '834px' },
         }}
       >
         {!everythingLoaded ? (
@@ -157,46 +156,70 @@ const App: React.FC = () => {
         ) : (
           <>
             {/*Header */}
-            <Header calculatedEnergyPoints={calculatedEnergyPoints ? calculatedEnergyPoints : new Big(0)} />
+            <Header
+              calculatedEnergyPoints={calculatedEnergyPoints ? calculatedEnergyPoints : new Big(0)}
+              setOriginalEnergyPoints={setOriginalEnergyPoints}
+            />
 
             {/* Tabs */}
             <Box
               sx={{
+                width: '100%',
+                maxWidth: '407px',
                 display: 'flex',
-                width: 'fit-content',
-                margin: '40px auto 0 auto',
+                margin: '35% auto 0 auto',
                 '@media(min-width: 768px)': { margin: '80px auto 0 auto' },
               }}
             >
-              <Box sx={{ display: 'flex', width: '407px', borderRadius: '40px', backgroundColor: '#454579' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  height: '78px',
+                  borderRadius: '40px',
+                  backgroundColor: '#454579',
+                }}
+              >
                 <Box
+                  className="bangers-font"
                   onClick={() => setActiveTab('marketPlace')}
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '150px',
-                    height: '55px',
-                    border: '1px solid black',
-                    backgroundColor: activeTab === 'marketPlace' ? 'white' : 'black',
-                    color: activeTab === 'marketPlace' ? 'black' : 'white',
+                    width: '50%',
+                    height: '100%',
+                    fontSize: '25px',
+                    color: 'white',
+                    borderRadius: activeTab === 'marketPlace' ? '40px' : '0',
+                    background:
+                      activeTab === 'marketPlace'
+                        ? 'linear-gradient(to bottom, #A29BF8, #432982)'
+                        : 'transparent',
                     cursor: 'pointer',
+                    '@media(min-width: 450px)': { fontSize: '33px' },
                   }}
                 >
                   MARKET PLACE
                 </Box>
                 <Box
+                  className="bangers-font"
                   onClick={() => setActiveTab('purchases')}
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '150px',
-                    height: '55px',
-                    border: '1px solid black',
-                    backgroundColor: activeTab === 'purchases' ? 'white' : 'black',
-                    color: activeTab === 'purchases' ? 'black' : 'white',
+                    width: '50%',
+                    height: '100%',
+                    fontSize: '25px',
+                    color: 'white',
+                    borderRadius: activeTab === 'purchases' ? '40px' : '0',
+                    background:
+                      activeTab === 'purchases'
+                        ? 'linear-gradient(to bottom, #A29BF8, #432982)'
+                        : 'transparent',
                     cursor: 'pointer',
+                    '@media(min-width: 450px)': { fontSize: '33px' },
                   }}
                 >
                   COMPRAS
@@ -204,95 +227,96 @@ const App: React.FC = () => {
               </Box>
             </Box>
             {/* Body */}
-            {activeTab === 'marketPlace' && (
-              <>
-                {rewards && rewards.length === 0 && (
-                  <Typography
-                    className="bangers-font"
-                    sx={{
-                      display: 'block',
-                      margin: 'auto',
-                      height: '100%',
-                      color: 'white',
-                      fontSize: '32px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    No se encontraron recompensas
-                  </Typography>
-                )}
-                {rewards && rewards.length > 0 && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      maxWidth: '705px',
-                      width: '100%',
-                      flexWrap: 'wrap',
-                      paddingTop: '50px',
-                      gap: '25px',
-                      margin: '0 auto',
-                    }}
-                  >
-                    {rewards?.map((reward) => (
-                      <RewardCard
-                        key={reward.id}
-                        reward={reward}
-                        calculatedEnergyPoints={
-                          calculatedEnergyPoints ? calculatedEnergyPoints : new Big(0.0)
-                        }
-                      />
-                    ))}
-                  </Box>
-                )}
-              </>
-            )}
-            {activeTab === 'purchases' && (
-              <>
-                {purchases && purchases.length === 0 && (
-                  <Typography
-                    className="bangers-font"
-                    sx={{
-                      display: 'block',
-                      margin: 'auto',
-                      height: '100%',
-                      color: 'white',
-                      fontSize: '32px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    No se encontraron compras
-                  </Typography>
-                )}
-                {purchases && purchases.length > 0 && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                      alignItems: 'center',
-                      paddingTop: '50px',
-                      gap: '25px',
-                    }}
-                  >
-                    {purchases
-                      .sort((a, b) => {
-                        const aDate = a.createdAt as unknown as Timestamp;
-                        const bDate = b.createdAt as unknown as Timestamp;
-
-                        return bDate.seconds - aDate.seconds;
-                      })
-                      .map((purchase) => (
-                        <PurchaseCard
-                          key={purchase.id}
-                          purchase={purchase}
-                          rewards={rewards as IRewardEntity[]}
+            <Box sx={{ paddingTop: '75px' }}>
+              {activeTab === 'marketPlace' && (
+                <>
+                  {rewards && rewards.length === 0 && (
+                    <Typography
+                      className="bangers-font"
+                      sx={{
+                        display: 'block',
+                        margin: 'auto',
+                        height: '100%',
+                        color: 'white',
+                        fontSize: '32px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      No se encontraron recompensas
+                    </Typography>
+                  )}
+                  {rewards && rewards.length > 0 && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        maxWidth: '794px',
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        gap: '45px',
+                        margin: '0 auto',
+                      }}
+                    >
+                      {rewards?.map((reward) => (
+                        <RewardCard
+                          key={reward.id}
+                          reward={reward}
+                          calculatedEnergyPoints={
+                            calculatedEnergyPoints ? calculatedEnergyPoints : new Big(0.0)
+                          }
                         />
                       ))}
-                  </Box>
-                )}
-              </>
-            )}
+                    </Box>
+                  )}
+                </>
+              )}
+              {activeTab === 'purchases' && (
+                <>
+                  {purchases && purchases.length === 0 && (
+                    <Typography
+                      className="bangers-font"
+                      sx={{
+                        display: 'block',
+                        margin: 'auto',
+                        height: '100%',
+                        color: 'white',
+                        fontSize: '32px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      No se encontraron compras
+                    </Typography>
+                  )}
+                  {purchases && purchases.length > 0 && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        maxWidth: '794px',
+                        width: '100%',
+                        alignItems: 'center',
+                        gap: '45px',
+                      }}
+                    >
+                      {purchases
+                        .sort((a, b) => {
+                          const aDate = a.createdAt as unknown as Timestamp;
+                          const bDate = b.createdAt as unknown as Timestamp;
+
+                          return bDate.seconds - aDate.seconds;
+                        })
+                        .map((purchase) => (
+                          <PurchaseCard
+                            key={purchase.id}
+                            purchase={purchase}
+                            rewards={rewards as IRewardEntity[]}
+                          />
+                        ))}
+                    </Box>
+                  )}
+                </>
+              )}
+            </Box>
           </>
         )}
       </Box>
