@@ -232,7 +232,7 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards, isA
         sx={{
           position: 'absolute',
           top: '7px',
-          right: '10px',
+          right: '0px',
           transform: 'translateX(-50%)',
           fontSize: '15px',
           fontWeight: '400',
