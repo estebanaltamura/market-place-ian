@@ -231,7 +231,7 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards, isA
         className="bangers-font"
         sx={{
           position: 'absolute',
-          top: '5px',
+          top: '7px',
           right: '10px',
           transform: 'translateX(-50%)',
           fontSize: '15px',
