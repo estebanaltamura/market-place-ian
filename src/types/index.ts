@@ -30,6 +30,7 @@ export interface IPurchaseEntity extends IPurchase {
 export interface IPurchase {
   rewardId: string;
   title: string;
+  description: string;
   price: number;
   rewardCategory: RewardCategoryTypes;
 }

@@ -40,6 +40,9 @@ const App: React.FC = () => {
   // ** Firebase subscriptions
   const unsuscribeRef = useRef<Unsubscribe>();
 
+  // ** admin state
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const purchasesCollectionSubscription: () => void = () => {
     const purchasesCollectionRef = collection(db, Entities.purchases);
     const purchasesQuery = query(purchasesCollectionRef);
@@ -65,6 +68,12 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params && params.size === 1 && params.has('admin')) {
+      setIsAdmin(true);
+    }
+
     getRewards(setRewards);
     purchasesCollectionSubscription();
     getEnergyPoints(setOriginalEnergyPoints);
@@ -113,6 +122,10 @@ const App: React.FC = () => {
       }
     }
   }, [rewards, purchases, originalEnergyPoints]);
+
+  useEffect(() => {
+    console.log(isAdmin);
+  }, [isAdmin]);
 
   return (
     <Box
@@ -167,7 +180,7 @@ const App: React.FC = () => {
                 width: '100%',
                 maxWidth: '407px',
                 display: 'flex',
-                margin: '35% auto 0 auto',
+                margin: '30px auto 0 auto',
                 '@media(min-width: 768px)': { margin: '80px auto 0 auto' },
               }}
             >
@@ -227,7 +240,7 @@ const App: React.FC = () => {
               </Box>
             </Box>
             {/* Body */}
-            <Box sx={{ paddingTop: '75px' }}>
+            <Box sx={{ paddingTop: '75px', width: '100%' }}>
               {activeTab === 'marketPlace' && (
                 <>
                   {rewards && rewards.length === 0 && (
