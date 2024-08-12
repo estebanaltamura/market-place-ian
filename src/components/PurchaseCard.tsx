@@ -227,6 +227,21 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards, isA
         {createdAtDate}
       </Typography>
 
+      <Box
+        className="bangers-font"
+        sx={{
+          position: 'absolute',
+          top: '5px',
+          right: '10px',
+          transform: 'translateX(-50%)',
+          fontSize: '15px',
+          fontWeight: '400',
+          color: purchase.isPaid ? '#3d8c40' : '#D21F3C',
+        }}
+      >
+        {purchase.isPaid ? (isAdmin ? 'Pagado' : 'Cobrado') : isAdmin ? 'No pagado' : 'No cobrado'}
+      </Box>
+
       {isAdmin && (
         <>
           <Divider

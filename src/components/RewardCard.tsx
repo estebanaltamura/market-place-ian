@@ -109,6 +109,13 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
         <Typography
           className="bangers-font"
           sx={{
+            display: '-webkit-box',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
             fontSize: '34px',
             lineHeight: '36px',
             marginTop: '13px',
@@ -124,6 +131,13 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
         <Typography
           className="barlow-condensed-font"
           sx={{
+            display: '-webkit-box',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
             textAlign: 'center',
             marginTop: '10px',
             width: '235px',
