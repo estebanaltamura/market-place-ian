@@ -58,6 +58,7 @@ const RewardCard: React.FC<IRewardCard> = ({ reward, calculatedEnergyPoints }) =
           title,
           price,
           description,
+          isPaid: false,
           rewardCategory,
         });
 

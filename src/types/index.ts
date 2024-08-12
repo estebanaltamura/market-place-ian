@@ -32,6 +32,7 @@ export interface IPurchase {
   title: string;
   description: string;
   price: number;
+  isPaid: boolean;
   rewardCategory: RewardCategoryTypes;
 }
 

@@ -1,14 +1,21 @@
 import { Box, Divider, Typography, useMediaQuery } from '@mui/material';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { IPurchaseEntity, IRewardEntity } from 'types';
+import { Entities, IPurchaseEntity, IRewardEntity } from 'types';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { dynamicDelete } from 'services/internal/dynamicServices/dynamicDelete';
+import { dynamicUpdate } from 'services/internal/dynamicServices/dynamicUpdate';
 
 interface IPurchaseCardPropTypes {
   purchase: IPurchaseEntity;
   rewards: IRewardEntity[];
+  isAdmin: boolean;
 }
 
-const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) => {
+const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards, isAdmin }) => {
+  const MySwal = withReactContent(Swal);
+
   const [image, setImage] = useState<string>('');
   const isTablet = useMediaQuery('(min-width:768px)');
 
@@ -24,6 +31,52 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) =
   })
     .format(createdAt)
     .replace(',', '');
+
+  const deletePurchase = async () => {
+    const userResponse = await MySwal.fire({
+      title: '¿Estás seguro de que quieres eliminar esta compra?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (userResponse.isConfirmed) {
+      try {
+        await dynamicDelete(Entities.purchases, purchase.id);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const changePaidStatus = async () => {
+    const isPaid = purchase.isPaid;
+    const title = isPaid
+      ? '¿Estás seguro de que quieres marcar como no pagada?'
+      : '¿Estás seguro de que quieres marcar como pagada?';
+
+    const confirmButtonText = isPaid ? 'Marcar como no pagada' : 'Marcar como pagada';
+
+    const userResponse = await MySwal.fire({
+      title: title,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (userResponse.isConfirmed) {
+      try {
+        await dynamicUpdate(Entities.purchases, purchase.id, {
+          ...purchase,
+          isPaid: !purchase.isPaid,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!rewards || !purchase) return;
@@ -42,7 +95,13 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) =
         width: '100%',
         maxWidth: isTablet ? '700px' : '340px',
         height: 'fit-content',
-        padding: '25px 15px 15px 15px',
+        padding: isAdmin
+          ? isTablet
+            ? '25px 15px 40px 15px'
+            : '25px 15px 90px 15px'
+          : isTablet
+          ? '25px 15px 15px 15px'
+          : '25px 15px 15px 15px',
         backgroundColor: '#291F68',
         borderRadius: '20px',
       }}
@@ -153,7 +212,6 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) =
           </Typography>
         </Box>
       )}
-
       <Typography
         className="bangers-font"
         sx={{
@@ -168,7 +226,70 @@ const PurchaseCard: React.FC<IPurchaseCardPropTypes> = ({ purchase, rewards }) =
       >
         {createdAtDate}
       </Typography>
-      <Box sx={{ display: 'flex', flexGrow: 1 }}></Box>
+
+      {isAdmin && (
+        <>
+          <Divider
+            sx={{
+              position: 'absolute',
+              bottom: isTablet ? '17px' : '42px',
+              left: '15px',
+              border: '1px solid #4c4c4c',
+              width: 'calc(100% - 30px)',
+              margin: '15px 0 22px 0',
+            }}
+          />
+
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: isTablet ? '7px' : '20px',
+              left: isTablet ? '27%' : '',
+              display: 'flex',
+              gap: '20px',
+            }}
+          >
+            <Box
+              onClick={deletePurchase}
+              sx={{
+                display: 'flex',
+                padding: '3px 10px',
+                height: '25px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: 'white',
+                border: '1px solid  #4c4c4c',
+                backgroundColor: '#291F68',
+                cursor: 'pointer',
+                borderRadius: '8px',
+              }}
+            >
+              Eliminar
+            </Box>
+            <Box
+              onClick={changePaidStatus}
+              sx={{
+                display: 'flex',
+                padding: '3px 10px',
+                height: '25px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: 'white',
+                border: '1px solid  #4c4c4c',
+                backgroundColor: '#291F68',
+                cursor: 'pointer',
+                borderRadius: '8px',
+              }}
+            >
+              {purchase.isPaid ? 'Marcar como no pagada' : 'Marcar como pagada'}
+            </Box>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

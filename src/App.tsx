@@ -123,10 +123,6 @@ const App: React.FC = () => {
     }
   }, [rewards, purchases, originalEnergyPoints]);
 
-  useEffect(() => {
-    console.log(isAdmin);
-  }, [isAdmin]);
-
   return (
     <Box
       sx={{
@@ -323,6 +319,7 @@ const App: React.FC = () => {
                             key={purchase.id}
                             purchase={purchase}
                             rewards={rewards as IRewardEntity[]}
+                            isAdmin={isAdmin}
                           />
                         ))}
                     </Box>
